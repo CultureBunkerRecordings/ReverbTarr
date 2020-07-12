@@ -24,7 +24,7 @@ AlgoReverbAudioProcessorEditor::AlgoReverbAudioProcessorEditor (AlgoReverbAudioP
     reverbTimeSlider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
     reverbTimeSlider.setBounds(50, 30, 100, 100);
     reverbTimeSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 50, 30);
-    reverbTimeSlider.setRange(0.4f, 0.7f, 0.1f);
+    reverbTimeSlider.setRange(0.4f, 1.0f, 0.01f);
     reverbTimeSlider.setValue(0.5f);
     addAndMakeVisible(reverbTimeSlider);
     
@@ -38,7 +38,7 @@ AlgoReverbAudioProcessorEditor::AlgoReverbAudioProcessorEditor (AlgoReverbAudioP
     modulationSlider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
     modulationSlider.setBounds(150, 30, 100, 100);
     modulationSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 50, 30);
-    modulationSlider.setRange(1., 10.f, 0.1f);
+    modulationSlider.setRange(1.f, 10.f, 0.01f);
     modulationSlider.setValue(1.0f);
     addAndMakeVisible(modulationSlider);
     
@@ -53,7 +53,7 @@ AlgoReverbAudioProcessorEditor::AlgoReverbAudioProcessorEditor (AlgoReverbAudioP
     wetDrySlider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
     wetDrySlider.setBounds(250, 30, 100, 100);
     wetDrySlider.setTextBoxStyle(Slider::TextBoxBelow, false, 50, 30);
-    wetDrySlider.setRange(0., 1.f, 0.1f);
+    wetDrySlider.setRange(0.f, 1.f, 0.01f);
     wetDrySlider.setValue(0.5f);
     addAndMakeVisible(wetDrySlider);
     
@@ -81,7 +81,7 @@ AlgoReverbAudioProcessorEditor::AlgoReverbAudioProcessorEditor (AlgoReverbAudioP
     diffusionSlider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
     diffusionSlider.setBounds(150, 175, 100, 100);
     diffusionSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 50, 30);
-    diffusionSlider.setRange(0.2, 1.8f, 0.1f);
+    diffusionSlider.setRange(0.2f, 0.8f, 0.01f);
     diffusionSlider.setValue(0.5f);
     addAndMakeVisible(diffusionSlider);
     
@@ -96,7 +96,7 @@ AlgoReverbAudioProcessorEditor::AlgoReverbAudioProcessorEditor (AlgoReverbAudioP
     lpfSlider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
     lpfSlider.setBounds(250, 175, 100, 100);
     lpfSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 50, 30);
-    lpfSlider.setRange(1000., 20000.f, 1.f);
+    lpfSlider.setRange(1000.f, 20000.f, 1.f);
     lpfSlider.setValue(10000.f);
     addAndMakeVisible(lpfSlider);
     
@@ -133,5 +133,20 @@ void AlgoReverbAudioProcessorEditor::sliderValueChanged(Slider* slider)
     {
         processor.predelayMilli = predelaySlider.getValue();
     }
-    
+    if(slider == &wetDrySlider)
+    {
+        processor.wet = wetDrySlider.getValue();
+    }
+    if(slider == &reverbTimeSlider)
+    {
+        processor.timeValue = reverbTimeSlider.getValue(); 
+    }
+    if(slider == &modulationSlider)
+    {
+        processor.modValue = modulationSlider.getValue();
+    }
+    if(slider == &diffusionSlider)
+    {
+        processor.diffusionValue = diffusionSlider.getValue();
+    }
 }

@@ -12,6 +12,9 @@
 
 #include <JuceHeader.h>
 #include "FractionalDelay.hpp"
+#include "FDN.hpp"
+#include "APF.hpp"
+#include "Schroeder.hpp"
 
 //==============================================================================
 /**
@@ -57,8 +60,16 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
     float predelayMilli = 0.f;
+    float wet = 0.5f;
+    float timeValue = 0.5f;
+    float modValue = 1.f;
+    float diffusionValue = 0.5f;
 private:
     FractionalDelay predelay;
+    FDN fdn;
+//    APF apf1{240.f, 0.8564f};
+//    APF apf2{82.f, 0.964f};
+    Schroeder schroeder;
     int fs = 44100;
     
     //==============================================================================

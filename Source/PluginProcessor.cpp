@@ -98,6 +98,12 @@ void AlgoReverbAudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
     
     predelay.setFs(sampleRate);
     predelay.setDelaySamples(0.0f);
+//    fdn.setFs(sampleRate);
+    
+//    apf1.setFs(sampleRate);
+//    apf2.setFs(sampleRate);
+    schroeder.setFs(sampleRate);
+    
     fs = sampleRate;
 }
 
@@ -145,26 +151,38 @@ void AlgoReverbAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuf
     
     float predelaySecs = predelayMilli/1000;
     int predelaySamples = predelaySecs * fs;
-    
     predelay.setDelaySamples(predelaySamples);
 
+//    fdn.setTime(timeValue);
+//    fdn.setDepth(modValue);
+//
+//    apf1.setDepth(modValue);
+//    apf2.setDepth(modValue);
+//
+//    apf1.setFeedbackGain(diffusionValue);
+//    apf2.setFeedbackGain(diffusionValue);
+    
+    schroeder.setFeedbackGain(timeValue);
+    schroeder.setDiffusionGain(diffusionValue);
+    schroeder.setDepth(modValue);
+    
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         for (int n = 0; n<buffer.getNumSamples(); n++)
         {
             float x = buffer.getWritePointer (channel) [n];
             
-            float w = predelay.processSample(x, channel);
+            float verb = predelay.processSample(x, channel);
+//            verb = fdn.processSample(verb, channel);
+//            verb = apf1.processSample(verb, channel);
+//            verb = apf2.processSample(verb, channel);
+            verb = schroeder.processSample(verb, channel);
             
-            float y = x * 0.5 * w;
+            float y = (1-wet) * x + wet * verb;
             
             buffer.getWritePointer(channel)[n] = y;
-            
         }
         
-       
-
-        // ..do something to the data...
     }
 }
 
